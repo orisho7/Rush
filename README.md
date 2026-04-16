@@ -95,6 +95,12 @@ Add this to your workflow to warm the cache beforehand:
 rush prefetch
 ```
 
+## Troubleshooting & Logs
+
+Since Rush offloads heavy tasks (like S3 uploads) to a detached background process to keep your CLI responsive, you can monitor the real-time progress and debug errors by checking the following file in your project root:
+
+- `daemon.log`: Contains all background task initialization, compression benchmarks, and S3 upload/network logs.
+
 ## Architecture Layout
 
 Rush adheres to strict Go project boundaries, cleanly separating the CLI wrapper from the robust internal engine:

@@ -62,7 +62,7 @@ func StoreinS3(hash string) error {
 	defer os.Remove(archivePath) // Clean up disk after upload attempt
 
 	uploadStart := time.Now()
-	err = UploadToS3(archivePath, checksum)
+	err = UploadToS3(archivePath, hash+".tar.zst", checksum)
 	if err != nil {
 		fmt.Printf("Upload failed: %v\n", err)
 		UpdateS3Status(hash, "failed")
@@ -108,9 +108,9 @@ func CheckS3Status(hash string) (*CacheStatus, error) {
 	return &status, nil
 }
 
-func UploadToS3(filename string, checksum string) error {
+func UploadToS3(localPath string, s3Key string, checksum string) error {
 	fmt.Println("Uploading to S3 (Stable Parallel)...")
-	file, err := os.Open(filename)
+	file, err := os.Open(localPath)
 	if err != nil {
 		return err
 	}
@@ -123,7 +123,7 @@ func UploadToS3(filename string, checksum string) error {
 
 	_, err = uploader.Upload(context.TODO(), &s3.PutObjectInput{
 		Bucket:   aws.String(bucketName),
-		Key:      aws.String(filename),
+		Key:      aws.String(s3Key),
 		Body:     file,
 		Metadata: map[string]string{"checksum": checksum},
 	})

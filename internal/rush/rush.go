@@ -22,6 +22,8 @@ func Execute() {
 	if len(os.Args) >= 3 && os.Args[1] == "daemon" {
 		logFile, _ := os.OpenFile("daemon.log", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 		log.SetOutput(logFile)
+		os.Stdout = logFile
+		os.Stderr = logFile
 		log.Printf("[Daemon] Task Init: %v\n", os.Args[2:])
 
 		SetupS3()

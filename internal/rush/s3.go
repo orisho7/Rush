@@ -25,6 +25,7 @@ func SetupS3() {
 	_ = godotenv.Load()
 
 	endpoint := os.Getenv("RUSH_S3_ENDPOINT")
+
 	bucketName = os.Getenv("RUSH_S3_BUCKET")
 	if bucketName == "" {
 		bucketName = "rush-cache"

@@ -5,6 +5,7 @@ import (
 	"os"
 	"os/exec"
 	"path/filepath"
+	"runtime"
 	"time"
 )
 
@@ -65,8 +66,14 @@ func CopyfromVault(hash string) {
 
 // makeJunction provides a Windows-compatible method of creating directory symlinks
 // bypassing the strict Administrator-only boundaries of standard Windows symlinks.
+// On Linux/macOS, it uses standard OS symlinks.
 func makeJunction(target, source string) error {
-	// os.Symlink on Windows requires admin/dev mode. Junctions do not.
-	cmd := exec.Command("cmd", "/c", "mklink", "/j", source, target)
-	return cmd.Run()
+	if runtime.GOOS == "windows" {
+		// os.Symlink on Windows requires admin/dev mode. Junctions do not.
+		cmd := exec.Command("cmd", "/c", "mklink", "/j", source, target)
+		return cmd.Run()
+	}
+
+	// On Linux/macOS, standard symlinks are used and do not require admin
+	return os.Symlink(target, source)
 }

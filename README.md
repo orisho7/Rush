@@ -46,6 +46,14 @@ Based on real-world testing (e.g., a 500MB+ `node_modules` repository):
 
 Rush fundamentally eliminates the "Waiting for dependencies" phase from your development lifecycle.
 
+## ⚠️ Best Practices & Warnings
+
+To ensure Rush performs at its peak and doesn't cause unexpected behavior, follow these rules:
+
+- **Don't run Rush in an empty environment**: Always ensure you have run your initial installation (`npm install`, etc.) before running `rush` for the first time on a new environment. Running it on an empty folder will result in an empty cache baseline.
+- **Don't manually delete `.rush-cache`**: This folder contains the local L1 cache and the payloads served to your LAN peers. If you delete it, you lose the ability to instantly restore your environment and your coworkers will lose access to your local cache.
+- **Run from project root**: Ensure you are in the directory containing your `package.json` or its subdirectories so Rush can't miss your project identity.
+
 ## Real-World Workflow
 
 Here is how you use Rush in your daily development:

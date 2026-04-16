@@ -4,11 +4,12 @@
 
 ## Why Rush?
 
-Running `npm install` over and over across multiple branches, CI runners, and colleague laptops wastes massive amounts of time on large repositories. Rush intercepts this process, deterministically hashes your environment, and instantly restores identical dependencies at gigabit speeds without making you wait.
+Running `npm install`, `yarn`, or `pnpm i` over and over across multiple branches, CI runners, and colleague laptops wastes massive amounts of time on large repositories. Rush intercepts this process, deterministically hashes your environment, and instantly restores identical dependencies at gigabit speeds without making you wait.
 
 ## Key Features
 
-- **Deterministic Identity**: Hashes not only lockfiles (`package-lock.json`, `yarn.lock`, etc.) but also OS, CPU architecture, and Node.js version to ensure caching is mathematically flawless and binary-compatible.
+- **Universal Compatibility**: Automatically detects and executes natively for `npm`, `yarn`, and `pnpm` environments via zero-config lockfile scanning.
+- **Deterministic Identity**: Hashes not only lockfiles (`package-lock.json`, `yarn.lock`, `pnpm-lock.yaml`) but also OS, CPU architecture, and Node.js version to ensure caching is mathematically flawless and binary-compatible.
 - **LAN P2P Discovery**: Automatically discovers other Rush nodes on your local network (e.g., coworkers at the office). If your coworker just built the same branch, you pull the cache directly from them at LAN speed, completely bypassing the internet.
 - **S3 Cloud Coordination**: Keeps your global team in sync using an S3 bucket. Rush smartly utilizes S3 metadata (`status.json`) to prevent "Duplicate Install Stampedes"—if a colleague in another country is uploading a build, your machine politely waits for their completion to save bandwidth and CPU.
 - **Predictive Prefetching**: Run `rush prefetch` (or put it in a Git hook) to scan local branches, predict their future cache hashes, and silently pull dependencies into the background _before_ you even run `git checkout`.
@@ -43,7 +44,7 @@ Based on real-world testing (e.g., a 500MB+ `node_modules` repository):
 | **Rush P2P (Local LAN)** | `< 3.2s`     | **46x Faster**    |
 | **Rush L1 (SSD Vault)**  | `< 0.1s`     | **>1500x Faster** |
 
-Rush fundamentally eliminates the "Waiting for npm" phase from your development lifecycle.
+Rush fundamentally eliminates the "Waiting for dependencies" phase from your development lifecycle.
 
 ## Quick Start
 
@@ -74,7 +75,7 @@ rush
 1. Check **L1 (Local SSD Vault)**. If found, instant extraction via atomic junction mapping.
 2. If miss, rapidly scan the **LAN (P2P)** via mDNS for another peer. If found, stream the cache block at 1-10 Gbps.
 3. If miss, query **L2 (S3 Cloud)**. If found, stream and decompress via a 1MB buffered I/O Pipe and verify integrity via SHA256 checksums.
-4. If total miss, trigger `npm install`, benchmark the time taken, and spawn a detached background Daemon to compress, upload to S3, and serve local peers.
+4. If total miss, auto-trigger the native installation (`npm`, `yarn`, or `pnpm`), benchmark the time taken, and spawn a detached background Daemon to compress, upload to S3, and serve local peers.
 
 ### 3. Dedicated LAN Cache Server (Optional)
 

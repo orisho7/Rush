@@ -1,6 +1,6 @@
 ## **Rush**
 
-Rush is a fast dependency caching tool for Node.js projects.
+Rush is a fast, cross-platform dependency caching tool for Node.js projects.
 It avoids repeating `npm install` by reusing dependencies across machines.
 
 ---
@@ -61,23 +61,30 @@ If two environments match, Rush safely reuses the same dependencies.
 
 ## **Features**
 
-* Works with `npm`, `yarn`, and `pnpm`
-* Local cache (L1) for instant restores
-* Remote cache (L2) for team and CI reuse
-* Deterministic hashing for correctness
-* Atomic restore (no broken installs)
+* **Cross-platform**: Native support for Windows, Linux, and macOS.
+* **Multi-manager**: Works with `npm`, `yarn`, and `pnpm`.
+* **Zero-config**: Automatically finds your project root and lockfiles.
+* **L1 Cache**: Ultra-fast local restores using system junctions/symlinks.
+* **L2 Cache**: Distributed team and CI reuse via S3-compatible storage.
+* **P2P Streaming**: Ultra-fast LAN cache sharing between local nodes.
+* **Atomic**: Integrated locking prevents corrupted states.
 
 ---
 
 ## **Getting started**
 
+1. Build the binary:
 ```bash
 git clone https://github.com/orisho7/Rush.git
 cd Rush
-go build -o rush
+go build -o rush cmd/rush/main.go
 ```
 
-Run inside your project:
+2. Run inside your project:
+```bash
+./rush
+```
+OR
 
 ```bash
 rush
@@ -87,7 +94,7 @@ rush
 
 ## **Optional: Remote cache (team use)**
 
-Create a `.env` file:
+Create a `.env` file in your project root:
 
 ```env
 RUSH_S3_ENDPOINT="http://your-s3-endpoint:9000"
@@ -109,9 +116,9 @@ AWS_SECRET_ACCESS_KEY="..."
 
 ## **Notes**
 
-* First run behaves like a normal install
-* Later runs reuse cached results
-* Cache is based on environment identity, not guesses
+* First run behaves like a normal install.
+* Later runs reuse cached results.
+* Cache is based on environment identity, not guesses.
 
 ---
 

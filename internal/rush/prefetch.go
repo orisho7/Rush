@@ -8,7 +8,6 @@ import (
 	"os/exec"
 	"runtime"
 	"strings"
-	"syscall"
 )
 
 // Prefetch implements a "Time Engine" that reads Git branch histories locally

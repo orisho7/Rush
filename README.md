@@ -54,6 +54,15 @@ To ensure Rush performs at its peak and doesn't cause unexpected behavior, follo
 - **Don't manually delete `.rush-cache`**: This folder contains the local L1 cache and the payloads served to your LAN peers. If you delete it, you lose the ability to instantly restore your environment and your coworkers will lose access to your local cache.
 - **Run from project root**: Ensure you are in the directory containing your `package.json` or its subdirectories so Rush can't miss your project identity.
 
+## 🚀 Optimization: Windows Defender
+
+On Windows, the built-in antivirus (Windows Defender) can significantly slow down Rush during cache extraction because it scans every file in `node_modules` in real-time. For the best performance (sub-second restores):
+
+1.  **Process Exclusion**: Add `rush.exe` to the Windows Defender **Process Exclusion** list.
+2.  **Folder Exclusion**: Add your project root or the `.rush-cache` folder to the **Folder Exclusion** list.
+
+This allows Rush to perform high-speed I/O and atomic directory swapping without being throttled by background security scanning.
+
 ## Real-World Workflow
 
 Here is how you use Rush in your daily development:

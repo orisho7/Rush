@@ -46,6 +46,21 @@ Based on real-world testing (e.g., a 500MB+ `node_modules` repository):
 
 Rush fundamentally eliminates the "Waiting for dependencies" phase from your development lifecycle.
 
+## Real-World Workflow
+
+Here is how you use Rush in your daily development:
+
+1.  **Project Initialization**: Navigate to your project root (where `package.json` is).
+2.  **Add Dependencies**: Run your normal install command (e.g., `npm install lodash`).
+3.  **Create Cache**: Run `rush`.
+    - Rush hashes your environment and realizes the cache is missing.
+    - It triggers the local build, benchmarks it, and establishes a baseline.
+    - A background daemon is spawned to compress and upload the `node_modules` to your S3 bucket and LAN peers.
+4.  **Instant Restoration**: 
+    - A coworker clones the repo or you switch branches.
+    - Run `rush`.
+    - Rush finds the match in S3 or on a peer's machine and restores your environment in seconds.
+
 ## Quick Start
 
 ### 1. Configure the Cloud Storage (Optional)

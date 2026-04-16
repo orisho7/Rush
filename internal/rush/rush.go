@@ -222,9 +222,7 @@ func GetProjectIdentity() (string, error) {
 
 			fmt.Println("Handing off S3 upload to background daemon...")
 			cmd := exec.Command(os.Args[0], "daemon", stringhex)
-			if runtime.GOOS == "windows" {
-				cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000} // CREATE_NO_WINDOW
-			}
+			
 
 			err = cmd.Start()
 			if err != nil {

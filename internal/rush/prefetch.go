@@ -40,9 +40,7 @@ func Prefetch() {
 		if !checkhash(targetHash) {
 			fmt.Printf(" Prefetching branch '%s' (%s)...\n", b, targetHash)
 			cmd := exec.Command(os.Args[0], "daemon", "warm", targetHash)
-			if runtime.GOOS == "windows" {
-				cmd.SysProcAttr = &syscall.SysProcAttr{CreationFlags: 0x08000000}
-			}
+		
 			_ = cmd.Start()
 		}
 	}

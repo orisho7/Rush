@@ -96,7 +96,7 @@ Rush uses the industry-standard `godotenv` to safely load these credentials with
 
 ### 2. Run Rush
 
-Simply navigate to any directory in your project (Rush will auto-detect the root) and run:
+Simply navigate to any directory in your project (Rush will auto-detect the root) and run in terminal:
 
 ```bash
 rush

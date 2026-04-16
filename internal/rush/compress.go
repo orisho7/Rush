@@ -20,7 +20,8 @@ import (
 func compress(hash string) (string, error) {
 	fmt.Println("Compressing...")
 	hasher := sha256.New()
-	outFile, err := os.Create(hash + ".tar.zst")
+	archivePath := filepath.Join(".rush-cache", hash+".tar.zst")
+	outFile, err := os.Create(archivePath)
 	if err != nil {
 		return "", err
 	}

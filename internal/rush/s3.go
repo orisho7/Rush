@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 	"strings"
 
 	"time"
@@ -57,8 +58,11 @@ func StoreinS3(hash string) error {
 	fmt.Printf("✓ Local Compression: %v\n", time.Since(zipStart))
 
 	// 2 - Uploading to S3
+	archivePath := filepath.Join(".rush-cache", hash+".tar.zst")
+	defer os.Remove(archivePath) // Clean up disk after upload attempt
+
 	uploadStart := time.Now()
-	err = UploadToS3(hash+".tar.zst", checksum)
+	err = UploadToS3(archivePath, checksum)
 	if err != nil {
 		fmt.Printf("Upload failed: %v\n", err)
 		UpdateS3Status(hash, "failed")
@@ -118,7 +122,7 @@ func UploadToS3(filename string, checksum string) error {
 	})
 
 	_, err = uploader.Upload(context.TODO(), &s3.PutObjectInput{
-		Bucket:   aws.String("rush-cache"),
+		Bucket:   aws.String(bucketName),
 		Key:      aws.String(filename),
 		Body:     file,
 		Metadata: map[string]string{"checksum": checksum},

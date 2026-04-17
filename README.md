@@ -101,7 +101,7 @@ jobs:
       
       - name: Install Rush
         run: |
-          curl -L https://github.com/your-repo/rush/releases/latest/download/rush -o /usr/local/bin/rush
+          curl -L https://github.com/orisho7/Rush/releases/latest/download/rush -o /usr/local/bin/rush
           chmod +x /usr/local/bin/rush
           
       - name: Restore/Install Dependencies
@@ -123,7 +123,7 @@ Hosting services like Vercel often have proprietary caching, but Rush can still 
 
 1.  **Custom Build Command**: In the Vercel Dashboard, change your "Install Command" to:
     ```bash
-    curl -L [URL_TO_YOUR_RUSH_BINARY] -o rush && chmod +x rush && ./rush
+    curl -L https://github.com/orisho7/Rush/releases/latest/download/rush -o rush && chmod +x rush && ./rush
     ```
 2.  **Environment Variables**: Add your `RUSH_S3_*` and `AWS_*` variables to the Vercel Project Settings.
 3.  **Result**: Vercel will now attempt to restore your `node_modules` from your team's global S3 bucket before the build starts, often saving minutes on every deployment.

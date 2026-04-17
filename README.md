@@ -71,7 +71,64 @@ If two environments match, Rush safely reuses the same dependencies.
 
 ---
 
-## **Getting started**
+## 🛠️ Implementation Guide
+
+### 1. Local Environment Setup
+
+For individual developers, Rush is designed to be a "set it and forget it" tool.
+
+1.  **Build & Install**:
+    ```bash
+    go build -o rush.exe ./cmd/rush
+    mv rush.exe /usr/local/bin/ # Or add to your Windows Path
+    ```
+2.  **Configuration**: Create a `.env` in your project root with your S3 credentials (see Quick Start).
+3.  **Usage**: Simply run `rush` instead of `npm install`. Rush will decide if it needs to build or if it can pull from a peer/S3.
+
+---
+
+### 2. CI/CD Pipelines (GitHub Actions, GitLab, etc.)
+
+Rush is extremely powerful in CI environments where builders are ephemeral and start with empty disks.
+
+**Example: GitHub Actions**
+```yaml
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Install Rush
+        run: |
+          curl -L https://github.com/your-repo/rush/releases/latest/download/rush -o /usr/local/bin/rush
+          chmod +x /usr/local/bin/rush
+          
+      - name: Restore/Install Dependencies
+        run: rush
+        env:
+          RUSH_S3_ENDPOINT: ${{ secrets.RUSH_S3_ENDPOINT }}
+          RUSH_S3_BUCKET: ${{ secrets.RUSH_S3_BUCKET }}
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+```
+
+**Pro Tip**: In CI, Rush will automatically detect the environment and prioritize S3 restoration, skipping the P2P layer unless you are running on-premise self-hosted runners.
+
+---
+
+### 3. Hosting Services (Vercel, Netlify)
+
+Hosting services like Vercel often have proprietary caching, but Rush can still be used to drastically speed up the "Initial Build" phase.
+
+1.  **Custom Build Command**: In the Vercel Dashboard, change your "Install Command" to:
+    ```bash
+    curl -L [URL_TO_YOUR_RUSH_BINARY] -o rush && chmod +x rush && ./rush
+    ```
+2.  **Environment Variables**: Add your `RUSH_S3_*` and `AWS_*` variables to the Vercel Project Settings.
+3.  **Result**: Vercel will now attempt to restore your `node_modules` from your team's global S3 bucket before the build starts, often saving minutes on every deployment.
+
+## Getting Started
 
 1. Build the binary:
 ```bash

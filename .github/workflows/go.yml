@@ -18,14 +18,22 @@ jobs:
         echo "Simulating failure"
         exit 1
 
+    - name: Calculate duration
+      if: always()
+      run: |
+        END_TIME=$(date +%s)
+        DURATION=$((END_TIME - START_TIME))
+        echo "DURATION=$DURATION" >> $GITHUB_ENV
+
     - name: Notify Robin
       if: always()
       run: |
         curl -X POST "${{ secrets.ROBIN_WEBHOOK_URL }}/webhook" \
         -H "Content-Type: application/json" \
-        -d '{
-          "status": "${{ job.status }}",
-          "repo": "${{ github.repository }}",
-          "branch": "${{ github.ref_name }}",
-          "run_id": "${{ github.run_id }}"
-        }'
+        -d "{
+          \"status\": \"${{ job.status }}\",
+          \"repo\": \"${{ github.repository }}\",
+          \"branch\": \"${{ github.ref_name }}\",
+          \"run_id\": \"${{ github.run_id }}\",
+          \"duration_seconds\": \"$DURATION\"
+        }"

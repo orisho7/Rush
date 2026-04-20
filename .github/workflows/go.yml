@@ -27,7 +27,7 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-       - name: Notify Robin
+    - name: Notify Robin
       if: always() # Always run this step even if the build fails
       run: |
         curl -X POST "${{ secrets.ROBIN_WEBHOOK_URL }}/webhook" \

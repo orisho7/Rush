@@ -12,12 +12,6 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    # Intentional failure
-    - name: Force build failure
-      run: |
-        echo "Simulating failure"
-        exit 1
-
     - name: Calculate duration
       if: always()
       run: |

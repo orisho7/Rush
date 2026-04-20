@@ -31,6 +31,7 @@ Installing dependencies repeatedly is slow:
 - CI pipelines
 - multiple developers
 
+
 Rush removes this repetition.
 
 Same dependencies → same result → reuse instead of reinstall.
